@@ -26,15 +26,26 @@ export default function App() {
   }
 
   function updateNote(text) {
+    let currentNote = findCurrentNote();
+    let newList = [];
     setNotes((oldNotes) =>
-      oldNotes.map((oldNote) => {
+      oldNotes.map((oldNote, index) => {
         return oldNote.id === currentNoteId
-          ? { ...oldNote, body: text, id: currentNoteId }
+          ? { ...oldNote, body: text }
           : oldNote;
       })
     );
+    newList = [...notes];
+    for (const x of Object.values(newList)) {
+      if (x.id === currentNoteId) {
+        newList.pop(currentNote);
+        newList.unshift(currentNote);
+      } else {
+        console.log("These are not");
+      }
+      setNotes(newList);
+    }
   }
-
   function findCurrentNote() {
     return (
       notes.find((note) => {
@@ -68,3 +79,9 @@ export default function App() {
     </main>
   );
 }
+
+//  if (currentNoteId === currentNote.id) {
+//  } else if (currentNoteId !== oldNotes[0].id) {
+//    oldNotes.pop(oldNotes.indexOf(currentNote));
+//    oldNotes.unshift(currentNote);
+//  }
