@@ -1,19 +1,30 @@
-import { React, useEffect, useState } from "react";
-import Sidebar from "./components/Sidebar";
-import Editor from "./components/Editor";
-import { data } from "./data";
-import Split from "react-split";
-import { nanoid } from "nanoid";
+import { React, useEffect, useState } from 'react';
+import Sidebar from './components/Sidebar';
+import Editor from './components/Editor';
+import { data } from './data';
+import Split from 'react-split';
+import { nanoid } from 'nanoid';
 
 export default function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [notes, setNotes] =
-    useState(() => JSON.parse(localStorage.getItem("notes"))) || useState([]);
+    useState(() => JSON.parse(localStorage.getItem('notes'))) || [];
   const [currentNoteId, setCurrentNoteId] = useState(
-    (notes[0] && notes[0].id) || ""
+    (notes[0] && notes[0].id) || ''
   );
 
   useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
+    if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      setDarkMode(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes));
   }, [notes]);
 
   function createNewNote() {
@@ -26,26 +37,21 @@ export default function App() {
   }
 
   function updateNote(text) {
-    let currentNote = findCurrentNote();
-    let newList = [];
-    setNotes((oldNotes) =>
-      oldNotes.map((oldNote, index) => {
-        return oldNote.id === currentNoteId
-          ? { ...oldNote, body: text }
-          : oldNote;
-      })
-    );
-    newList = [...notes];
-    for (const x of Object.values(newList)) {
-      if (x.id === currentNoteId) {
-        newList.pop(currentNote);
-        newList.unshift(currentNote);
-      } else {
-        console.log("These are not");
+    // Put most recent modified note at top
+    setNotes((oldNotes) => {
+      const newArray = [];
+      for (let i = 0; i < oldNotes.length; i++) {
+        const oldNote = oldNotes[i];
+        if (oldNote.id === currentNoteId) {
+          newArray.unshift({ ...oldNote, body: text });
+        } else {
+          newArray.push(oldNote);
+        }
       }
-      setNotes(newList);
-    }
+      return newArray;
+    });
   }
+
   function findCurrentNote() {
     return (
       notes.find((note) => {
@@ -54,16 +60,33 @@ export default function App() {
     );
   }
 
+  function deleteNote(event, noteId) {
+    event.stopPropagation();
+    const nonDeletedNotes = notes.filter((note) => note.id !== noteId);
+    setNotes(nonDeletedNotes);
+  }
+
+  function handleCheckbox() {
+    setChecked(!checked);
+    setDarkMode(!darkMode);
+    console.log('checked');
+  }
+
   return (
-    <main>
+    <main className={darkMode ? 'dark' : ''}>
       {notes.length > 0 ? (
         <Split sizes={[30, 70]} direction="horizontal" className="split">
           <Sidebar
             notes={notes}
             currentNote={findCurrentNote()}
             setCurrentNoteId={setCurrentNoteId}
+            deleteNote={deleteNote}
             newNote={createNewNote}
+            checked={checked}
+            handleCheckbox={handleCheckbox}
+            darkMode={darkMode}
           />
+
           {currentNoteId && notes.length > 0 && (
             <Editor currentNote={findCurrentNote()} updateNote={updateNote} />
           )}
@@ -79,9 +102,3 @@ export default function App() {
     </main>
   );
 }
-
-//  if (currentNoteId === currentNote.id) {
-//  } else if (currentNoteId !== oldNotes[0].id) {
-//    oldNotes.pop(oldNotes.indexOf(currentNote));
-//    oldNotes.unshift(currentNote);
-//  }
