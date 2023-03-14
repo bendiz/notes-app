@@ -26,16 +26,11 @@ button:focus {
 
 .pane {
   overflow-y: auto;
-  /* padding: 10px; */
 }
 
 .sidebar {
   width: 20%;
   height: 100vh;
-}
-
-.sidebar--note {
-  /* display: flex; */
 }
 
 .sidebar--header {
@@ -108,8 +103,10 @@ button:focus {
   text-overflow: ellipsis;
 }
 
-.selected-note {
+.selected-note,
+.mde-text::selection {
   background-color: #ff93a9;
+  color: #fff;
 }
 
 .selected-note .text-snippet {
@@ -265,4 +262,22 @@ button:focus {
 
 .dark .mde-text {
   background-color: #2e3236;
+}
+
+.dark .react-mde,
+.dark .mde-header {
+  border: 1px solid var(--secondary-dark-color);
+}
+
+.dark .mde-text:focus {
+  outline: 1px solid var(--secondary-dark-color);
+}
+
+.dark .mde-text::selection {
+  background: var(--main-dark-color);
+  color: #b1b1b1;
+}
+
+.dark .mde-header button.selected {
+  border: 1px solid var(--secondary-dark-color);
 }
