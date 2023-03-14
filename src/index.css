@@ -1,3 +1,9 @@
+:root {
+  --main-dark-color: #212529;
+  --secondary-dark-color: #495057;
+  --tertiary-dark-color: #adb5bd;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -198,6 +204,7 @@ button:focus {
 
 /* DARKMODE */
 
+/* Toggle darkmode */
 .toggle-button {
   display: flex;
   justify-content: center;
@@ -228,35 +235,34 @@ button:focus {
   visibility: hidden;
 }
 
-.dark {
-  background-color: #212529;
-  color: #fff;
-}
-
-.dark h4 {
-  color: #adb5bd;
-}
-
+/* First button */
+.dark .first-note,
 .dark .new-note,
 .dark .selected-note,
 .dark .gutter {
-  background-color: #495057;
+  background-color: var(--secondary-dark-color);
 }
 
+.dark,
+.dark .mde-header {
+  background-color: var(--main-dark-color);
+}
+
+.dark h4 {
+  color: var(--tertiary-dark-color);
+}
+
+.dark,
 .dark .gg-trash {
   color: #fff;
 }
 
-.dark .mde-header {
-  background: #212529;
-}
-
 .dark .mde-header button,
-.dark .mde-header ul.mde-header-group li.mde-header-item button {
-  color: #adb5bd;
+.dark .mde-header ul.mde-header-group li.mde-header-item button,
+.dark .mde-text {
+  color: var(--tertiary-dark-color);
 }
 
 .dark .mde-text {
   background-color: #2e3236;
-  color: #adb5bd;
 }

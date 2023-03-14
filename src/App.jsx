@@ -8,8 +8,9 @@ import { nanoid } from 'nanoid';
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [notes, setNotes] =
-    useState(() => JSON.parse(localStorage.getItem('notes'))) || [];
+  const [notes, setNotes] = useState(
+    () => JSON.parse(localStorage.getItem('notes')) || []
+  );
   const [currentNoteId, setCurrentNoteId] = useState(
     (notes[0] && notes[0].id) || ''
   );
@@ -92,7 +93,7 @@ export default function App() {
           )}
         </Split>
       ) : (
-        <div className="no-notes">
+        <div className={darkMode ? 'dark no-notes' : 'no-notes'}>
           <h1>You have no notes</h1>
           <button className="first-note" onClick={createNewNote}>
             Create one now
