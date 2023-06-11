@@ -10,8 +10,6 @@ Live: https://notes-app-bendiz.netlify.app/
 
 - 🌱 I’m currently learning **React**
 
-- 📝 I regularly post on twitter [www.twitter.com/bendizxo](www.twitter.com/bendizxo)
-
 - 📫 How to reach me **benedicte.roksvag@gmail.com**
 
 <h3 align="left">Languages and Tools:</h3>
